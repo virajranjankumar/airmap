@@ -34,5 +34,5 @@
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js"
   },
-  "homepage": "https://virajranjankumar.github.io/airmap",
+  "homepage": "https://virajranjankumar.github.io/airmap"
 }
