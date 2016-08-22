@@ -1,0 +1,52 @@
+export const CREATE_PLAN = 'CREATE_PLAN'
+export const READ_PLAN   = 'READ_PLAN'
+export const UPDATE_PLAN = 'UPDATE_PLAN'
+export const DELETE_PLAN = 'DELETE_PLAN'
+
+export const CREATE_MARKER = 'CREATE_MARKER'
+export const READ_MARKER   = 'READ_MARKER'
+export const UPDATE_MARKER = 'UPDATE_MARKER'
+export const DELETE_MARKER = 'DELETE_MARKER'
+
+export const CREATE_POLYGON = 'CREATE_POLYGON'
+export const READ_POLYGON   = 'READ_POLYGON'
+export const UPDATE_POLYGON = 'UPDATE_POLYGON'
+export const DELETE_POLYGON = 'DELETE_POLYGON'
+
+export const CREATE_CIRCLE = 'CREATE_CIRCLE'
+export const READ_CIRCLE   = 'READ_CIRCLE'
+export const UPDATE_CIRCLE = 'UPDATE_CIRCLE'
+export const DELETE_CIRCLE = 'DELETE_CIRCLE'
+
+export const CREATE_CIRCLE_HEIGHT = 'CREATE_CIRCLE_HEIGHT'
+export const UPDATE_CIRCLE_HEIGHT = 'UPDATE_CIRCLE_HEIGHT'
+export const DELETE_CIRCLE_HEIGHT = 'DELETE_CIRCLE_HEIGHT'
+
+export const SELECT_MARKER = 'SELECT_MARKER'
+export const SELECT_POLYGON = 'SELECT_POLYGON'
+export const SELECT_CIRCLE = 'SELECT_CIRCLE'
+export const SELECT_NONE = 'SELECT_NONE'
+
+export const INVALIDATE_SEARCH = 'INVALIDATE_SEARCH'
+export const SEARCH_LOCATION = 'SEARCH_LOCATION'
+export const REQUEST_LOCATION = 'REQUEST_LOCATION'
+export const RECEIVE_LOCATION = 'RECEIVE_LOCATION'
+
+export const ADD_CIRCLE_TO_PLAN = 'ADD_CIRCLE_TO_PLAN'
+export const ADD_MARKER_TO_PLAN = 'ADD_MARKER_TO_PLAN'
+export const ADD_POLYGON_TO_PLAN = 'ADD_POLYGON_TO_PLAN'
+export const REMOVE_CIRCLE_TO_PLAN = 'REMOVE_CIRCLE_TO_PLAN'
+export const REMOVE_MARKER_TO_PLAN = 'REMOVE_MARKER_TO_PLAN'
+export const REMOVE_POLYGON_TO_PLAN = 'REMOVE_POLYGON_TO_PLAN'
+
+export const NO_FLY_ZONE = "No Fly Zone"
+export const PLAN_ZONE = "Plan Zone"
+export const CONFLICT_ZONE = "Conflict Zone"
+export const START_MARKER = 'START_MARKER'
+export const STOP_MARKER = 'STOP_MARKER'
+
+export const MARKER = 'marker'
+export const CIRCLE = 'circle'
+export const POLYGON = 'polygon'
+
+export const UPDATE_CIRCLE_HEIGHT_EDIT = 'UPDATE_CIRCLE_HEIGHT_EDIT'

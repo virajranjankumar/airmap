@@ -1,0 +1,19 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+#content {
+	margin-left: 20px;
+}
+.material-icons.stop { color: orange; }
+.material-icons.start { color: green; }
+.material-icons.md-24 { font-size: 24px; }
+main.mdl-layout__content {
+	overflow-x: visible;
+	overflow-y: visible;
+}
+.leaflet-container {
+	height: 400px;
+	width: 100%;
+}
