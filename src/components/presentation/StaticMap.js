@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Map,  Popup, TileLayer, FeatureGroup, CircleMarker,LayersControl } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw'
 import Leaflet from 'leaflet'
-import { STOP_MARKER, MARKER, POLYGON, CIRCLE, NO_FLY_ZONE, CONFLICT_ZONE } from '../../actions'
+import { LANDING_MARKER, MARKER, POLYGON, CIRCLE, NO_FLY_ZONE, CONFLICT_ZONE } from '../../actions'
 
 var overlaps = require('turf-overlaps');
 
@@ -10,12 +10,15 @@ const createIcon = (iconClass) => `<i class="material-icons ${iconClass} md-24">
 const startIcon = { html: createIcon('start'), iconAnchor: [5, 20], className: 'transparent' }
 const stopIcon  = { html: createIcon('stop'),  iconAnchor: [5, 20], className: 'transparent' }
 
-const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectNone, markers = [], polygons = [] }) =>
+const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectNone, markers = [], polygons = [], circles = [] }) =>
     <FeatureGroup>
+        {[...markers, ...circles].forEach(({layer, position}) => (layer.setLatLng) ? layer.setLatLng(position) : null)}
         {markers.forEach(({id, position, marker_type, layer}) => {
-          const icon = Leaflet.divIcon((marker_type === STOP_MARKER) ? stopIcon : startIcon)
-          layer.setIcon(icon)
+          const icon = Leaflet.divIcon((marker_type === LANDING_MARKER) ? stopIcon : startIcon)
+          if(layer.setIcon)
+            layer.setIcon(icon)
         })}
+        {circles.forEach(({layer, radius}) => layer.setRadius(radius))}
         {polygons.forEach(({id, zone_type, layer, positions}) => {
           if(zone_type === NO_FLY_ZONE)
             layer._path.setAttribute('fill', `url(#no_fly_zone)`)
@@ -42,14 +45,19 @@ const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectN
           onEdited={({layers}) => 
             layers.eachLayer(layer => {
               const {id, layerType} = layer.component
-              let positions, position
+              let positions, position, radius
 
               if(layerType === POLYGON) {
                 positions = layer.getLatLngs()
               } else {
                 position = layer.getLatLng()
               }
-              onUpdate({id, layerType, position, positions})
+
+              if(layerType === CIRCLE) {
+                radius = layer.getRadius()
+              }
+
+              onUpdate({id, layerType, position, positions, radius})
             }
           )}
           onCreated={({layerType, layer, target}) => {
@@ -119,7 +127,6 @@ const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectN
     </FeatureGroup>
 
 const StaticMap = ({ isVisible = false, onCreate, onUpdate, onDelete, onSelect, onSelectNone, position, address, polygons = [], circles = [], plans = [], markersForPlan = [], editableMarkers = [], markers = [] }) =>
-  <div style={{display: isVisible ? 'block' : 'none'}}>
     <Map center={position} zoom={18}>
       <LayersControl>
         <LayersControl.BaseLayer name="Open Street Map">
@@ -143,12 +150,11 @@ const StaticMap = ({ isVisible = false, onCreate, onUpdate, onDelete, onSelect, 
             attribution='&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.' />
         </LayersControl.BaseLayer>
       </LayersControl>
-      <DrawingFeatureGroup onCreate={onCreate} onUpdate={onUpdate} onDelete={onDelete} onSelect={onSelect} onSelectNone={onSelectNone} markers={markers} polygons={polygons} />
+      <DrawingFeatureGroup onCreate={onCreate} onUpdate={onUpdate} onDelete={onDelete} onSelect={onSelect} onSelectNone={onSelectNone} markers={markers} polygons={polygons} circles={circles} />
       <CircleMarker center={position} onClick={onSelectNone}>
         <Popup><span>{address}</span></Popup>
       </CircleMarker>
     </Map>
-  </div>
 
 StaticMap.propTypes = {
   onMarkerCreate: PropTypes.func,

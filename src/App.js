@@ -17,10 +17,9 @@ const PlanZonePattern = () => <Pattern id="plan_zone" stroke='yellow'/>
 const ConflictZonePattern = () => <Pattern id="conflict_zone" stroke='purple' strokeWidth={10} />
 
 const Planner = ({ isVisible }) => 
-  isVisible ? 
   <div>
     <VisibleMap />
-  </div> : null
+  </div>
 
 const mapStateToProps = state => {
   return {
@@ -34,12 +33,20 @@ const VisiblePlanner = connect(
 
 const Main = () => 
   <section className="mdl-layout__tab-panel is-active" id="plan-tab">
-    <VisiblePlan />
-    <VisiblePlanner />
-    <VisibleSearchField />
-    <VisiblePolygon />
-    <VisibleMarker />
-    <VisibleCircle />
+    <div className="plan">
+      <VisiblePlan />
+    </div>
+    <div className="map">
+      <VisiblePlanner />
+    </div>
+    <div className="search">
+      <VisibleSearchField />
+    </div>
+    <div className="shapes">
+      <VisiblePolygon />
+      <VisibleMarker />
+      <VisibleCircle />
+    </div>
     <svg id="patterns">
       <NoFlyZonePattern />
       <PlanZonePattern />
@@ -48,6 +55,20 @@ const Main = () =>
     </svg>
   </section>
 
-const App = () => <Main />
+const Header = () =>
+  <header className="mdl-layout__header">
+    <div className="mdl-layout__header-row">
+      <span className="mdl-layout-title">Flight Planner</span>
+      <div className="mdl-layout-spacer"></div>
+    </div>
+  </header>
+
+const App = () => 
+  <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <Header />
+    <main className="mdl-layout__content">
+      <Main />
+    </main>
+  </div>
 
 export default App;

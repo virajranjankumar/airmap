@@ -34,16 +34,16 @@ import {
 	REMOVE_CIRCLE_TO_PLAN,
 	REMOVE_MARKER_TO_PLAN,
 	REMOVE_POLYGON_TO_PLAN,
-	START_MARKER,
+	TAKE_OFF_MARKER,
 	PLAN_ZONE,
 } from './actions'
 
 const action = (type, p = {}) => payload => { return { payload: {...payload, ...p }, type } }
 
-export const createPlan 		= action(CREATE_PLAN, 	{ name:'A Plan' } )
-export const createMarker 		= action(CREATE_MARKER, { name:'Maneuver', marker_type:START_MARKER } )
-export const createPolygon 		= action(CREATE_POLYGON,{ name:'Area', zone_type:PLAN_ZONE, distance:5, angle:45, color:'#ffff00' } )
-export const createCircle 		= action(CREATE_CIRCLE, { name:'Column' } )
+export const createPlan 		= action(CREATE_PLAN, 	{ name:'', id:1 } )
+export const createMarker 		= action(CREATE_MARKER, { name:'Take Off', marker_type:TAKE_OFF_MARKER } )
+export const createPolygon 		= action(CREATE_POLYGON,{ name:'Scanning Plan', zone_type:PLAN_ZONE, distance:5, angle:45, color:'#ffff00' } )
+export const createCircle 		= action(CREATE_CIRCLE, { name:'Scanning Column' } )
 export const createCircleHeight = action(CREATE_CIRCLE_HEIGHT, { height:1, heading:0 } )
 
 export const readPlan   = action(READ_PLAN)

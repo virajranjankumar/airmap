@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react'
 
-const TextField  = ({ onChange, value = '', id = 0, children }) => 
+const TextField  = ({ onChange, value = '', id = 0, children, placeholder = '', type = 'text', list = '' }) => 
   <div className={`mdl-textfield mdl-js-textfield mdl-textfield--floating-label ${value !== '' ? 'is-dirty' : ''}`}>
-    <input className="mdl-textfield__input" type="text" id={id} onChange={({target: {value}}) => onChange(value)} value={value} />
+    <input className="mdl-textfield__input" type={type} id={id} onChange={({target: {value}}) => onChange(value)} value={value} placeholder={placeholder} list={list} />
     <label className="mdl-textfield__label" htmlFor={id}>{children}</label>
   </div>
 
 TextField.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
-  id: PropTypes.number,
   children: PropTypes.string
 }
 
@@ -29,19 +28,11 @@ export const ColorField  = ({ onChange, value = '', id = 0, children }) =>
   </div>
 
 export const SearchField = ({ onChange, isVisible, value = '', items = [], children }) => 
-  <form style={{display: isVisible ? 'block' : 'none'}}>
-    <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-      <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="serchField">
-        <i className="material-icons">search</i>
-      </label>
-      <div className="mdl-textfield__expandable-holder">
-        <input className="mdl-textfield__input" type="text" id="serchField" list="searchFieldList" onChange={({target: {value}}) => onChange(value)} value={value}/>
-        <label className="mdl-textfield__label" htmlFor="sample-expandable">{children}</label>
-      </div>
-    </div>
+  <form>
+    <TextField onChange={onChange} value={value} children={children} placeholder="Search Location" type="search" list="searchFieldList" />
     <datalist id="searchFieldList">
       {items.map(({address}) => <option key={address} value={address}/>)}
-    </datalist>
+    </datalist>    
   </form>
 
 SearchField.propTypes = {
@@ -56,7 +47,7 @@ export const LatLngField = ({ onUpdate, id, position = {}, disabled = '' }) => {
   return (
     <fieldset>
       <legend>Position</legend>
-      <NumberField  onChange={lat => onUpdate({id, position:{lat, lng}})} value={lat} min={-90} max={90} step={0.01} id={'nf'+id} error="Input is outside the values {-90, 90}" disabled={disabled}>Latitude</NumberField>
-      <NumberField  onChange={lng => onUpdate({id, position:{lat, lng}})} value={lng} min={-180} max={180} step={0.01} id={'nf'+id} error="Input is outside the values {-180, 180}" disabled={disabled}>Longitude</NumberField>
+      <NumberField  onChange={lat => onUpdate({id, position:{lat, lng}})} value={lat} min={-90} max={90} step={0.0001} id={'nf'+id} error="Input is outside the values {-90, 90}" disabled={disabled}>Latitude</NumberField>
+      <NumberField  onChange={lng => onUpdate({id, position:{lat, lng}})} value={lng} min={-180} max={180} step={0.0001} id={'nf'+id} error="Input is outside the values {-180, 180}" disabled={disabled}>Longitude</NumberField>
     </fieldset>)
 }

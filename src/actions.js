@@ -42,8 +42,8 @@ export const REMOVE_POLYGON_TO_PLAN = 'REMOVE_POLYGON_TO_PLAN'
 export const NO_FLY_ZONE = "No Fly Zone"
 export const PLAN_ZONE = "Plan Zone"
 export const CONFLICT_ZONE = "Conflict Zone"
-export const START_MARKER = 'START_MARKER'
-export const STOP_MARKER = 'STOP_MARKER'
+export const TAKE_OFF_MARKER = 'TAKE_OFF_MARKER'
+export const LANDING_MARKER = 'LANDING_MARKER'
 
 export const MARKER = 'marker'
 export const CIRCLE = 'circle'
