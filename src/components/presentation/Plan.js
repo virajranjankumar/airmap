@@ -2,12 +2,20 @@ import React, { PropTypes } from 'react'
 import TextField from './TextField'
 import { Marker } from 'react-leaflet';
 import Leaflet from 'leaflet'
+//import introJs from 'intro.js'
+window.showHints = false
+window.demo_id = Date.now()
 
 const HelpButton = ({ updatePlanName, addMarker, updateSearch, selectMarker, id = 0 }) => 
 	<a className="mdl-button mdl-js-button mdl-button--icon" onClick={() => {
+		window.showHints = !window.showHints
+
+		if(!window.showHints) {
+			introJs().hideHints()
+			return
+		}
+
 		let intro = introJs()
-		
-		window.demo_id = Date.now()
 
 		const createIcon = (iconClass) => `<i class="material-icons ${iconClass} md-24">flag</i>`
 		const startIcon = { html: createIcon('start'), iconAnchor: [5, 20], className: 'transparent' }
@@ -21,7 +29,7 @@ const HelpButton = ({ updatePlanName, addMarker, updateSearch, selectMarker, id 
 				},
 				{
 					element: document.querySelector('.map'),
-					hint: 'Edit the plan graphically on the map',
+					hint: 'Edit the plan graphically on the map by adding geo-fence and maneuvers from the control bar on the left',
 					hintPosition: 'top-middle'
 				},
 				{
@@ -46,10 +54,34 @@ const HelpButton = ({ updatePlanName, addMarker, updateSearch, selectMarker, id 
 					hint: 'Details of the selected plan will be displayed here',
 					hintPosition: 'top-middle'
 				},
+				{
+					element: document.querySelector('.leaflet-draw-draw-polygon'),
+					hint: 'Geo-fence tool',
+				},
+				{
+					element: document.querySelector('.leaflet-draw-draw-marker'),
+					hint: 'Takeoff and landing maneuver adding tool',
+				},
+				{
+					element: document.querySelector('.leaflet-draw-draw-circle'),
+					hint: 'Vertical Column Geo-fence tool',
+				},
+				{
+					element: document.querySelector('.leaflet-draw-edit-edit'),
+					hint: 'Edit Geo-fence and maneuver tool',
+				},
+				{
+					element: document.querySelector('.leaflet-draw-edit-remove'),
+					hint: 'Remove Geo-fence and maneuver tool',
+				},
+				{
+					element: document.querySelector('.leaflet-control-layers-toggle'),
+					hint: 'Toggle between maps. There are currently a number of open source maps provided'
+				}
 			]
 		});
 
-		intro.onhintclose(stepId => {
+		intro.onhintclick((a,b,stepId) => {
 			const plan_id = id
 			switch(stepId) {
 				case 0:

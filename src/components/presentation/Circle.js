@@ -9,7 +9,7 @@ const Circle = ({onUpdate, onCircleHeightCreate, onCircleHeightUpdate, onCircleH
 		<form style={{display: isVisible ? 'block' : 'none'}}>
 		<TextField  onChange={name => onUpdate({id, name})} value={name} id={id}>Name</TextField>
 		<br />
-		<NumberField onChange={radius => onUpdate({id, radius})} value={radius} id={id} min={0.01} max={Infinity} error='Input is out of range' disabled={true}>Radius</NumberField>
+		<NumberField onChange={radius => onUpdate({id, radius})} value={radius} id={id} min={0.01} max={Infinity} error='Input is out of range' disabled={true}>Radius (meters)</NumberField>
 		<br />
 		<LatLngField onUpdate={onUpdate} position={position} id={id} disabled={false}/>
 		<br />

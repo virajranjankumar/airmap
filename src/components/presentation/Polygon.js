@@ -12,7 +12,7 @@ const Polygon = ({ onUpdate, isVisible, polygon = {}}) => {
       	<TextField  onChange={name => onUpdate({id, name})} value={name} id={id}>Plan Name</TextField>
       	<br />
   		<fieldset>
-      		<legend>Area Properties</legend>
+      		<legend>Geofence Properties</legend>
 	        <radiogroup>
 		        <RadioField onChange={zone_type => onUpdate({id, zone_type})} name="zone_type" id="plan_zone_radio_input" defaultChecked={ zone_type === PLAN_ZONE} value={PLAN_ZONE}>Plan Zone</RadioField><br />
 		        <RadioField onChange={zone_type => onUpdate({id, zone_type})} name="zone_type" id="no_fly_zone_radio_input" defaultChecked={ zone_type === NO_FLY_ZONE} value={NO_FLY_ZONE}>No Fly Zone</RadioField>
@@ -22,8 +22,8 @@ const Polygon = ({ onUpdate, isVisible, polygon = {}}) => {
 	    {(zone_type === PLAN_ZONE) ?
 		<fieldset>
 			<legend>Flight Properties</legend>
-			<Slider min={1} max={100} step={0.1} value={distance} id="flight_path_distance" onChange={distance => onUpdate({id, distance})}>Distance between sweeps</Slider>
-			<Slider min={0} max={180} step={0.1} value={angle} 	  id="flight_path_angle" 	onChange={angle => onUpdate({id, angle})}>Bearing in Degrees</Slider>
+			<Slider min={1} max={100} step={0.1} value={distance} id="flight_path_distance" onChange={distance => onUpdate({id, distance})}>Distance between sweeps (meters)</Slider>
+			<Slider min={0} max={180} step={0.1} value={angle} 	  id="flight_path_angle" 	onChange={angle => onUpdate({id, angle})}>Bearing (degrees)</Slider>
 			<ColorField  onChange={color => onUpdate({id, color})} value={color} id={'color-' + id}>Path Color</ColorField>
 		</fieldset> : null}
 		{(zone_type === CONFLICT_ZONE ) ? <b>The planned areas should not overlay</b> : null}

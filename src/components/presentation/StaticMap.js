@@ -33,33 +33,35 @@ const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectN
           const current_id = id
           
           const conflicts = polygons
-          .filter(({id}) => id !== current_id)
+          .filter(({id, zone_type}) => id !== current_id && zone_type === NO_FLY_ZONE)
           .filter(({layer}) => overlaps(layer.toGeoJSON(), current_positions))
-          .forEach(({id}) => layer._path.setAttribute('fill', 'url(#conflict_zone)'))
+          .some(v => v)
 
           if(conflicts) {
             layer._path.setAttribute('fill', 'url(#conflict_zone)')
           }
         })}
         <EditControl
-          onEdited={({layers}) => 
-            layers.eachLayer(layer => {
-              const {id, layerType} = layer.component
-              let positions, position, radius
+          onEdited={({layers}) => {
+              layers.eachLayer(layer => {
+                const {id, layerType} = layer.component
+                let positions, position, radius
 
-              if(layerType === POLYGON) {
-                positions = layer.getLatLngs()
-              } else {
-                position = layer.getLatLng()
-              }
+                if(layerType === POLYGON) {
+                  positions = layer.getLatLngs()
+                } else {
+                  position = layer.getLatLng()
+                }
 
-              if(layerType === CIRCLE) {
-                radius = layer.getRadius()
-              }
+                if(layerType === CIRCLE) {
+                  radius = layer.getRadius()
+                }
 
-              onUpdate({id, layerType, position, positions, radius})
+                onUpdate({id, layerType, position, positions, radius})
+              })
+              onSelectNone()
             }
-          )}
+          }
           onCreated={({layerType, layer, target}) => {
             const id = Date.now()
 
@@ -97,6 +99,7 @@ const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectN
               case CIRCLE:
               case POLYGON:
                 layer.on('click', ({target:{component}}) => onSelect({...component}))
+                onSelect({...layer.component})
                 break;
               default:
                 onSelectNone()
@@ -126,29 +129,32 @@ const DrawingFeatureGroup = ({ onCreate, onUpdate, onDelete, onSelect, onSelectN
         />
     </FeatureGroup>
 
+const baseLayers = [{
+  name:"Open Street Map",
+  url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+  attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+},{
+  name:"Toner",
+  url:'http://tile.stamen.com/toner/{z}/{x}/{y}.png',
+  attribution:'&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.',
+},{
+  name:"Terrain",
+  url:'http://tile.stamen.com/terrain/{z}/{x}/{y}.png',
+  attribution:'&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.',
+  checked: true
+},{
+  name:"Watercolor",
+  url:'http://tile.stamen.com/watercolor/{z}/{x}/{y}.png',
+  attribution:'&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.'
+}]
+
 const StaticMap = ({ isVisible = false, onCreate, onUpdate, onDelete, onSelect, onSelectNone, position, address, polygons = [], circles = [], plans = [], markersForPlan = [], editableMarkers = [], markers = [] }) =>
     <Map center={position} zoom={18}>
       <LayersControl>
-        <LayersControl.BaseLayer name="Open Street Map">
-          <TileLayer
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Toner">
-          <TileLayer
-            url='http://tile.stamen.com/toner/{z}/{x}/{y}.png'
-            attribution='&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.' />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Terrain" checked={true}>
-          <TileLayer
-            url='http://tile.stamen.com/terrain/{z}/{x}/{y}.png'
-            attribution='&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.' />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Watercolor">
-          <TileLayer
-            url='http://tile.stamen.com/watercolor/{z}/{x}/{y}.png'
-            attribution='&copy; Stamen Design, under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution (CC BY 3.0)</a> license.' />
-        </LayersControl.BaseLayer>
+      {baseLayers.map(({name, url, attribution, checked = false}) => 
+        <LayersControl.BaseLayer name={name} checked={checked} key={name}>
+          <TileLayer url={url} attribution={attribution} />
+        </LayersControl.BaseLayer>)}
       </LayersControl>
       <DrawingFeatureGroup onCreate={onCreate} onUpdate={onUpdate} onDelete={onDelete} onSelect={onSelect} onSelectNone={onSelectNone} markers={markers} polygons={polygons} circles={circles} />
       <CircleMarker center={position} onClick={onSelectNone}>
